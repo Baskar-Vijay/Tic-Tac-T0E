@@ -28,17 +28,14 @@ int player = 1;
         {9, "-"}
     }; // win Scenario({1,4,7}, {2,5,8}, {3,6,9}) by straight, {1,5,9}, {3,5,7}
 */
-int main() {
-   
+int main() { 
      cout << "Tic Tac Toe Board" << endl;
+     map <int, string > Tictactoe = ResetTictactoe;
      while (not gameOver) {
      board(Tictactoe);
      cout << "Enter the Position you want to play (1-9): ";
-     int position;
-     cin >> position;
-
-     // Add game logic here
-    
+         int position;
+         cin >> position;
      switch(player)
      {
      case 1:
@@ -57,9 +54,22 @@ int main() {
             gameOver = true;
             cout << "Player " << player << " wins!" << endl;
             board(Tictactoe);
+             cout << "Press Enter to exit (-q to quit or -r to restart): ";  
+             string temp;
+             cin  >> temp;
+             if (temp == "-q") {
+                return 0; // Exit the program
+             } else if (temp == "-r") {
+                gameOver = false; // Reset the gameOver flag
+                player = 1; // Reset the player to 1
+               Tictactoe = ResetTictactoe; // Reset the board
+             }
+             else{
+                return 0;
+             }
             break;
         }
      }
-     
     }
+    return 0 ;
 }

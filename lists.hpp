@@ -2,7 +2,7 @@
 #include <vector>
 using namespace std;
 
-map<int, string> Tictactoe = {
+map<int, string> ResetTictactoe = {
     {1, "-"},
     {2, "-"},
     {3, "-"},
