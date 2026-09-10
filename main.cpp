@@ -11,6 +11,17 @@ void board(map<int, string> Tictactoe) {
         }
     }
 }
+void cheatingdetected(int position, map<int, string> Tictactoe) {
+    while (Tictactoe[position] == "X" or Tictactoe[position] == "O") {
+            cout << "Position already taken by Player 1. Please choose another position." << endl;
+            cin.clear();
+            cin.ignore(); 
+            // Clear the error state of cin
+            cout << "Enter the Position you want to play (1-9): ";
+            cin >> position;
+            continue; // Skip to the next iteration of the loop
+        }
+}
 
 bool gameOver = false;
 int player = 1;
@@ -34,18 +45,31 @@ int main() {
      while (not gameOver) {
      board(Tictactoe);
      cout << "Enter the Position you want to play (1-9): ";
+     try {
          int position;
          cin >> position;
+         if (position < 1 || position > 9) {
+             throw std::invalid_argument("Position out of bounds");
+         }
+         //the em dash is stored as a zero which out of the indexing format causing and error 
      switch(player)
      {
      case 1:
+        cheatingdetected(position, Tictactoe);
         Tictactoe[position] = "X";
         player += 1;
         break;
      case 2:
+        cheatingdetected(position, Tictactoe);
         Tictactoe[position] = "O";
         player -= 1;
         break;
+     }}
+     catch (const std::exception& e) {
+         cout << "Invalid input. Please enter a number between 1 and 9." << endl;
+         cin.clear();
+         cin.ignore(); // Discard invalid input
+         continue; // Skip to the next iteration of the loop
      }
      for(int i =0; i < winScenarios.size(); i++)
      {
