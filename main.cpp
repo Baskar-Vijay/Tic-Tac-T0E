@@ -67,8 +67,8 @@ int main() {
      }}
      catch (const std::exception& e) {
          cout << "Invalid input. Please enter a number between 1 and 9." << endl;
-         cin.clear();
-         cin.ignore(); // Discard invalid input
+         cin.ignore();
+         cin.clear(); // Discard invalid input
          continue; // Skip to the next iteration of the loop
      }
      for(int i =0; i < winScenarios.size(); i++)
