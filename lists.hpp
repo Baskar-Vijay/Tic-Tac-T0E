@@ -1,5 +1,7 @@
+#pragma once
 #include <map>
 #include <vector>
+#include <algorithm>
 using namespace std;
 
 map<int, string> ResetTictactoe = {
@@ -19,7 +21,12 @@ vector<int> winNumbers = {
     1,5,9, 3,5,7, 7,8,9,
     4,5,6, 1,2,3
 };
+vector<int> winfrequencies;
+int list() {
 for (int i = 1; i < winNumbers.size(); i++) {
-    map <int, int > BestMove;
+    map<int,int> BestMove;
     BestMove[count(winNumbers.begin(), winNumbers.end(), i)] = i;
+    winfrequencies.push_back(count(winNumbers.begin(), winNumbers.end(), i));
+};
+return 0;
 }

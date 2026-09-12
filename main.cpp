@@ -1,7 +1,10 @@
 #include <iostream>
 #include <map>
 #include <vector>
+#include <algorithm>
+#include <limits>
 #include "lists.hpp"
+#include "tictactoebot.hpp"
 using namespace std ;
 void board(map<int, string> Tictactoe) {
     for (int i = 1; i <= 9; i++) {
@@ -11,7 +14,7 @@ void board(map<int, string> Tictactoe) {
         }
     }
 }
-void cheatingdetected(int position, map<int, string> Tictactoe) {
+void cheatingdetected(int& position, map<int, string>& Tictactoe) {
     while (Tictactoe[position] == "X" or Tictactoe[position] == "O") {
             cout << "Position already taken by Player 1. Please choose another position." << endl;
             cin.clear();
@@ -42,12 +45,36 @@ int player = 1;
 int main() { 
      cout << "Tic Tac Toe Board" << endl;
      map <int, string > Tictactoe = ResetTictactoe;
+     cout << "Player 1 is X and Player 2 is O" << endl;
+     cout << "enter the number of players (1 or 2): ";
+        int numPlayers;
+        cin >> numPlayers;
+        if (numPlayers != 1 && numPlayers != 2) {
+            cout << "Invalid number of players. Please enter 1 or 2." << endl;
+            return 1;
+        }
+        else if (numPlayers == 1) {
+            cout << "Player 2 will be the computer." << endl;
+        } else {
+            cout << "Player 2 will be another human player." << endl;
+        }
      while (not gameOver) {
      board(Tictactoe);
+
+     // The computer takes its turn automatically, no prompt needed.
+     if (player == 2 && numPlayers == 1) {
+         player2bot(Tictactoe);
+         cout << "Computer played:" << endl;
+         player -= 1;
+     }
+     else {
      cout << "Enter the Position you want to play (1-9): ";
      try {
          int position;
          cin >> position;
+         if (cin.eof()) {
+             break; // No more input, stop the game loop
+         }
          if (position < 1 || position > 9) {
              throw std::invalid_argument("Position out of bounds");
          }
@@ -67,16 +94,21 @@ int main() {
      }}
      catch (const std::exception& e) {
          cout << "Invalid input. Please enter a number between 1 and 9." << endl;
-         cin.ignore();
-         cin.clear(); // Discard invalid input
+         if (cin.eof()) {
+             break; // No more input, stop the game loop
+         }
+         cin.clear(); // Clear the error state first
+         cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Then discard the bad input
          continue; // Skip to the next iteration of the loop
+     }
      }
      for(int i =0; i < winScenarios.size(); i++)
      {
         if(Tictactoe[winScenarios[i][0]] == Tictactoe[winScenarios[i][1]] && Tictactoe[winScenarios[i][1]] == Tictactoe[winScenarios[i][2]] && Tictactoe[winScenarios[i][0]] != "-")
         {
             gameOver = true;
-            cout << "Player " << player << " wins!" << endl;
+            int winner = (Tictactoe[winScenarios[i][0]] == "X") ? 1 : 2;
+            cout << "Player " << winner << " wins!" << endl;
             board(Tictactoe);
              cout << "Press Enter to exit (-q to quit or -r to restart): ";  
              string temp;
